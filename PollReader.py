@@ -55,16 +55,22 @@ class PollReader():
         """
 
         # iterate through each row of the data
-        for i in self.raw_data:
+        for i in self.raw_data[1:]:
 
             # split up the row by column
-            seperated = i.split(' ')
+            seperated = i.strip().split(',')
 
             # map each part of the row to the correct column
             self.data_dict['month'].append(seperated[0])
             self.data_dict['date'].append(int(seperated[1]))
-            self.data_dict['sample'].append(int(seperated[2]))
-            self.data_dict['sample type'].append(seperated[2])
+
+            sample_info = seperated[2].strip().split()
+
+            # First part = sample size (number)
+            self.data_dict['sample'].append(int(sample_info[0]))
+
+            # Second part = sample type (e.g., LV, RV, A)
+            self.data_dict['sample type'].append(sample_info[1])
             self.data_dict['Harris result'].append(float(seperated[3]))
             self.data_dict['Trump result'].append(float(seperated[4]))
 
